@@ -1,0 +1,10 @@
+#setting up aws cli
+aws ec2 describe-instances --filters Name=tag-key,Values=Name --query 'Reservations[*].Instances[*].{Name:Tags[?Key==`Name`]|[0].Value}'  --output txt > Name-of-instance.txt
+
+#shell script to grasp the data key of invidual VMs
+while read instance-id
+do
+echo The data keys for $instance-id is:
+
+echo `aws ssm send-command --document-name "AWS-RunShellScript" --comment "listing data keys" --instance-ids "Instance-ID" --parameters commands="cp /home/.ssh/authorized_keys ./authorized_keys" --region us-west-2 --output text`
+done < Name-of-instance.txt
