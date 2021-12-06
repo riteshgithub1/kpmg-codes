@@ -6,5 +6,5 @@ while read instance-id
 do
 echo The data keys for $instance-id is:
 
-echo `aws ssm send-command --document-name "AWS-RunShellScript" --comment "listing data keys" --instance-ids "Instance-ID" --parameters commands="cp /home/.ssh/authorized_keys ./authorized_keys" --region us-west-2 --output text`
+echo `aws ssm send-command --document-name "AWS-RunShellScript" --comment "listing data keys" --instance-ids "$instance-id" --parameters commands="cp /home/.ssh/authorized_keys ./authorized_keys" --region us-west-2 --output text`
 done < Name-of-instance.txt
