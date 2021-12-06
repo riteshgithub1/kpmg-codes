@@ -1,0 +1,40 @@
+version: '3'
+services:
+  webserver:
+  image: alpine:httpd
+    networks:
+     - appnet
+    volumes:
+     - type: bind
+	   source: /var/www/html
+	   target: /container/location
+    ports:
+     - 8080:80
+	 
+  appserver:
+    image: alpine:java1.8
+    networks:
+     - appnet
+	command: till-java/bin/java <java-program.java>
+    volumes:
+     - type: bind
+	   source: host-location-code
+	   target: /container/location
+	   
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: homestead
+      MYSQL_USER: homestead
+      MYSQL_PASSWORD: secret
+    ports:
+     - 3306:3306
+    networks:
+     - appnet
+    volumes:
+     - type:volume
+	   dbdata:/var/lib/mysql
+networks:
+  appnet:
+    driver: bridge
